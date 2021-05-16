@@ -1,0 +1,285 @@
+{
+    "core.Base64Tests": [
+        "core.Base64",
+        "core.UnitTester"
+    ],
+    "core.CursorTests": [
+        "core.Cursor",
+        "core.UnitTester"
+    ],
+    "core.DomUtilsTests": [
+        "core.DomUtils",
+        "core.UnitTester"
+    ],
+    "core.EventSubscriptionsTests": [
+        "core.EventNotifier",
+        "core.EventSubscriptions",
+        "core.Task",
+        "core.UnitTester"
+    ],
+    "core.PositionIteratorTests": [
+        "core.PositionIterator",
+        "core.UnitTester"
+    ],
+    "core.RuntimeTests": [
+        "core.UnitTester"
+    ],
+    "core.StepIteratorTests": [
+        "core.PositionFilter",
+        "core.PositionIterator",
+        "core.StepIterator",
+        "core.UnitTester"
+    ],
+    "core.UnitTester": [
+    ],
+    "core.ZipTests": [
+        "core.UnitTester",
+        "core.Zip"
+    ],
+    "gui.DirectFormattingControllerTests": [
+        "core.DomUtils",
+        "core.UnitTester",
+        "core.Utils",
+        "gui.DirectFormattingController",
+        "gui.SessionConstraints",
+        "gui.SessionContext",
+        "odf.Formatting",
+        "odf.Namespaces",
+        "odf.ObjectNameGenerator",
+        "odf.OdfCanvas",
+        "odf.OdfContainer",
+        "ops.Document",
+        "ops.OdtCursor",
+        "ops.OdtDocument",
+        "ops.Session"
+    ],
+    "gui.GuiStepUtilsTests": [
+        "core.PositionFilter",
+        "core.PositionIterator",
+        "core.StepIterator",
+        "core.UnitTester",
+        "core.enums",
+        "gui.GuiStepUtils",
+        "gui.VisualStepScanner"
+    ],
+    "gui.ImageControllerTests": [
+        "core.UnitTester",
+        "gui.ImageController",
+        "gui.SessionConstraints",
+        "gui.SessionContext",
+        "odf.Formatting",
+        "odf.Namespaces",
+        "odf.ObjectNameGenerator",
+        "odf.OdfCanvas",
+        "odf.OdfNodeFilter",
+        "ops.OdtCursor",
+        "ops.OdtDocument",
+        "ops.Session",
+        "xmldom.LSSerializer"
+    ],
+    "gui.MetadataControllerTests": [
+        "core.UnitTester",
+        "gui.MetadataController",
+        "odf.Namespaces",
+        "odf.OdfCanvas",
+        "odf.OdfContainer",
+        "odf.OdfNodeFilter",
+        "ops.Member",
+        "ops.OdtDocument",
+        "ops.OpAddMember",
+        "ops.Operation",
+        "ops.OperationFactory",
+        "ops.Session",
+        "xmldom.LSSerializer"
+    ],
+    "gui.SelectionControllerTests": [
+        "core.DomUtils",
+        "core.LoopWatchDog",
+        "core.UnitTester",
+        "gui.SelectionController",
+        "odf.Namespaces",
+        "odf.OdfCanvas",
+        "ops.OdtCursor",
+        "ops.OdtDocument",
+        "ops.Session"
+    ],
+    "gui.StyleSummaryTests": [
+        "core.UnitTester",
+        "gui.StyleSummary",
+        "odf.Formatting"
+    ],
+    "gui.TextControllerTests": [
+        "core.UnitTester",
+        "core.Utils",
+        "gui.SessionConstraints",
+        "gui.SessionContext",
+        "gui.TextController",
+        "odf.Namespaces",
+        "odf.OdfCanvas",
+        "odf.OdfNodeFilter",
+        "ops.OdtCursor",
+        "ops.OdtDocument",
+        "ops.Operation",
+        "ops.Session",
+        "xmldom.LSSerializer"
+    ],
+    "gui.TrivialUndoManagerTests": [
+        "core.PositionFilterChain",
+        "core.UnitTester",
+        "gui.TrivialUndoManager",
+        "gui.UndoManager",
+        "ops.Document",
+        "ops.OpAddCursor",
+        "ops.OpInsertText",
+        "ops.OpMoveCursor"
+    ],
+    "gui.UndoStateRulesTests": [
+        "core.UnitTester",
+        "gui.UndoStateRules",
+        "ops.OpApplyDirectStyling",
+        "ops.OpInsertText",
+        "ops.OpMoveCursor",
+        "ops.OpRemoveText",
+        "ops.OpSplitParagraph",
+        "ops.Operation"
+    ],
+    "odf.FormattingTests": [
+        "core.CSSUnits",
+        "core.UnitTester",
+        "odf.Formatting",
+        "odf.Namespaces"
+    ],
+    "odf.LayoutTests": [
+        "core.UnitTester",
+        "odf.Namespaces",
+        "odf.OdfCanvas",
+        "odf.OdfContainer",
+        "odf.OdfUtils",
+        "xmldom.XPath"
+    ],
+    "odf.ListStyleToCssTests": [
+        "core.UnitTester",
+        "odf.ListStylesToCss",
+        "odf.Namespaces",
+        "odf.StyleTree"
+    ],
+    "odf.MaliciousDocumentTests": [
+        "core.Async",
+        "core.UnitTester",
+        "odf.OdfContainer"
+    ],
+    "odf.ObjectNameGeneratorTests": [
+        "core.UnitTester",
+        "odf.ObjectNameGenerator",
+        "odf.OdfContainer"
+    ],
+    "odf.OdfContainerSafetyTests": [
+        "core.UnitTester",
+        "odf.OdfContainer"
+    ],
+    "odf.OdfContainerTests": [
+        "core.UnitTester",
+        "core.Zip",
+        "odf.Namespaces",
+        "odf.OdfContainer",
+        "xmldom.LSSerializer"
+    ],
+    "odf.OdfUtilsTests": [
+        "core.UnitTester",
+        "odf.OdfUtils"
+    ],
+    "odf.StyleCacheTests": [
+        "core.UnitTester",
+        "odf.OdfContainer",
+        "odf.StyleCache"
+    ],
+    "odf.StyleInfoTests": [
+        "core.UnitTester",
+        "odf.StyleInfo"
+    ],
+    "odf.StyleParseUtilsTests": [
+        "core.UnitTester",
+        "odf.StyleParseUtils"
+    ],
+    "odf.TextStyleApplicatorTests": [
+        "core.DomUtils",
+        "core.UnitTester",
+        "odf.Formatting",
+        "odf.ObjectNameGenerator",
+        "odf.OdfContainer",
+        "odf.OdfUtils",
+        "odf.TextStyleApplicator"
+    ],
+    "ops.OdtDocumentTests": [
+        "core.UnitTester",
+        "core.enums",
+        "odf.Namespaces",
+        "odf.OdfCanvas",
+        "odf.OdfNodeFilter",
+        "ops.Member",
+        "ops.OdtCursor",
+        "ops.OdtDocument",
+        "xmldom.LSSerializer",
+        "xmldom.LSSerializerFilter"
+    ],
+    "ops.OdtStepsTranslatorTests": [
+        "core.DomUtils",
+        "core.PositionFilter",
+        "core.PositionIterator",
+        "core.UnitTester",
+        "core.enums",
+        "gui.OdfTextBodyNodeFilter",
+        "odf.Namespaces",
+        "ops.OdtStepsTranslator",
+        "ops.TextPositionFilter"
+    ],
+    "ops.OperationTestHelper": [
+        "odf.OdfUtils"
+    ],
+    "ops.OperationTests": [
+        "core.UnitTester",
+        "core.enums",
+        "odf.Namespaces",
+        "odf.OdfCanvas",
+        "odf.OdfContainer",
+        "ops.Document",
+        "ops.Member",
+        "ops.OdtDocument",
+        "ops.OperationFactory",
+        "ops.OperationTestHelper",
+        "xmldom.LSSerializer"
+    ],
+    "ops.SessionTests": [
+        "core.UnitTester",
+        "odf.OdfCanvas",
+        "odf.OdfContainer",
+        "ops.Session"
+    ],
+    "ops.TransformationTests": [
+        "core.UnitTester",
+        "odf.Namespaces",
+        "odf.OdfCanvas",
+        "odf.OdfContainer",
+        "ops.Member",
+        "ops.OdtDocument",
+        "ops.Operation",
+        "ops.OperationFactory",
+        "ops.OperationTestHelper",
+        "ops.OperationTransformer",
+        "xmldom.LSSerializer"
+    ],
+    "ops.TransformerTests": [
+        "core.UnitTester",
+        "odf.OdfCanvas",
+        "ops.OperationTransformer"
+    ],
+    "xmldom.LSSerializerTests": [
+        "core.UnitTester",
+        "xmldom.LSSerializer"
+    ],
+    "xmldom.XPathTests": [
+        "core.UnitTester",
+        "odf.Namespaces",
+        "xmldom.XPath"
+    ]
+}

@@ -1,0 +1,620 @@
+<!--
+ * Copyright (C) 2014 KO GmbH <copyright@kogmbh.com>
+ *
+ * @licstart
+ * This file is part of WebODF.
+ *
+ * WebODF is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Affero General Public License (GNU AGPL)
+ * as published by the Free Software Foundation, either version 3 of
+ * the License, or (at your option) any later version.
+ *
+ * WebODF is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with WebODF.  If not, see <http://www.gnu.org/licenses/>.
+ * @licend
+ *
+ * @source: http://www.webodf.org/
+ * @source: https://github.com/kogmbh/WebODF/
+-->
+<layouttests
+    xmlns:draw="urn:oasis:names:tc:opendocument:xmlns:drawing:1.0"
+    xmlns:fo="urn:oasis:names:tc:opendocument:xmlns:xsl-fo-compatible:1.0"
+    xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0"
+    xmlns:style="urn:oasis:names:tc:opendocument:xmlns:style:1.0"
+    xmlns:svg="urn:oasis:names:tc:opendocument:xmlns:svg-compatible:1.0"
+    xmlns:text="urn:oasis:names:tc:opendocument:xmlns:text:1.0"
+>
+ <!-- Use CamelCase naming for value names which have a hyphen in it.
+      E.g. "margin-left" becomes "marginLeft"
+      Workaround for a bug(?) in Firefox which only provides those
+      attributes by the camelCase name, not the original name,
+      even with bracket notation. -->
+ <test name="simple">
+  <input>
+   <office:document-styles>
+    <office:automatic-styles>
+     <style:style style:name="onecol" style:family="section">
+      <style:section-properties>
+       <style:columns fo:column-count="1"/>
+      </style:section-properties>
+     </style:style>
+     <style:page-layout style:name="onecol">
+      <style:page-layout-properties
+       fo:page-width="10cm" fo:page-height="20cm" fo:margin="2cm"
+       fo:margin-top="2cm" fo:margin-bottom="2cm" fo:margin-left="2cm"
+       fo:margin-right="2cm">
+       <style:columns fo:column-count="1">
+        <style:column style:rel-width="1*" fo:start-indent="0cm"
+         fo:end-indent="5mm" />
+        <style:column style:rel-width="1*" fo:start-indent="5mm"
+         fo:end-indent="0cm" />
+       </style:columns>
+      </style:page-layout-properties>
+     </style:page-layout>
+    </office:automatic-styles>
+    <office:master-styles>
+     <style:master-page style:name="Standard" style:page-layout-name="onecol" />
+    </office:master-styles>
+   </office:document-styles>
+   <office:text>
+    <text:p>Lorem ipsum.</text:p>
+   </office:text>
+  </input>
+  <layoutchecks>
+   <check xpath="office:body">
+    <width value="10cm"/>
+   </check>
+   <check xpath=".//office:text">
+    <marginLeft value="2cm"/>
+    <marginRight value="2cm"/>
+    <width value="6cm"/>
+   </check>
+   <check xpath=".//text:p">
+    <clientWidth value="6cm"/>
+    <width value="6cm"/>
+    <fontVariant value="normal"/>
+   </check>
+  </layoutchecks>
+ </test>
+ <test name="simpleFrame">
+  <input>
+   <office:document-styles>
+    <office:automatic-styles>
+     <style:style style:name="onecol" style:family="section"/>
+     <style:page-layout style:name="onecol">
+      <style:page-layout-properties
+       fo:page-width="10cm" fo:page-height="20cm" fo:margin="2cm"
+       fo:margin-top="2cm" fo:margin-bottom="2cm" fo:margin-left="2cm"
+       fo:margin-right="2cm"/>
+     </style:page-layout>
+    </office:automatic-styles>
+    <office:master-styles>
+     <style:master-page style:name="Standard" style:page-layout-name="onecol" />
+    </office:master-styles>
+   </office:document-styles>
+   <office:text>
+    <text:p><draw:frame text:anchor-type="paragraph" draw:z-index="0" svg:width="4cm" svg:height="2cm" svg:x="1cm" svg:y="1cm">
+     <draw:text-box>
+      <text:p>frame</text:p>
+     </draw:text-box>
+    </draw:frame></text:p>
+   </office:text>
+  </input>
+  <layoutchecks>
+   <check xpath="office:body">
+    <width value="10cm"/>
+   </check>
+   <check xpath=".//draw:frame">
+    <width value="4cm"/>
+    <height value="2cm"/>
+   </check>
+   <check xpath=".//office:text">
+    <marginLeft value="2cm"/>
+    <marginRight value="2cm"/>
+    <width value="6cm"/>
+   </check>
+   <check xpath=".//office:text/text:p">
+    <clientWidth value="6cm"/>
+    <width value="6cm"/>
+    <fontVariant value="normal"/>
+   </check>
+  </layoutchecks>
+ </test>
+ <test name="label-width-and-position-list">
+  <input>
+   <office:document-styles>
+    <office:automatic-styles>
+     <text:list-style style:name="LFO1">
+      <text:list-level-style-number style:num-format="1" style:num-suffix=")" text:level="1">
+       <style:list-level-properties text:min-label-width="0.25in" text:space-before="0in"/>
+      </text:list-level-style-number>
+      <text:list-level-style-number style:num-format="a" style:num-letter-sync="true" style:num-suffix=")" text:level="2">
+       <style:list-level-properties text:min-label-width="0.25in" text:space-before="0.25in"/>
+      </text:list-level-style-number>
+      <text:list-level-style-number style:num-format="i" style:num-suffix=")" text:level="3">
+       <style:list-level-properties text:min-label-width="0.25in" text:space-before="0.5in"/>
+      </text:list-level-style-number>
+      <text:list-level-style-number style:num-format="1" style:num-prefix="(" style:num-suffix=")" text:level="4">
+       <style:list-level-properties text:min-label-width="0.25in" text:space-before="0.75in"/>
+      </text:list-level-style-number>
+      <text:list-level-style-number style:num-format="a" style:num-letter-sync="true" style:num-prefix="(" style:num-suffix=")" text:level="5">
+       <style:list-level-properties text:min-label-width="0.25in" text:space-before="1in"/>
+      </text:list-level-style-number>
+      <text:list-level-style-number style:num-format="i" style:num-prefix="(" style:num-suffix=")" text:level="6">
+       <style:list-level-properties text:min-label-width="0.25in" text:space-before="1.25in"/>
+      </text:list-level-style-number>
+      <text:list-level-style-number style:num-format="1" style:num-suffix="." text:level="7">
+       <style:list-level-properties text:min-label-width="0.25in" text:space-before="1.5in"/>
+      </text:list-level-style-number>
+      <text:list-level-style-number style:num-format="a" style:num-letter-sync="true" style:num-suffix="." text:level="8">
+       <style:list-level-properties text:min-label-width="0.25in" text:space-before="1.75in"/>
+      </text:list-level-style-number>
+      <text:list-level-style-number style:num-format="i" style:num-suffix="." text:level="9">
+       <style:list-level-properties text:min-label-width="0.25in" text:space-before="2in"/>
+      </text:list-level-style-number>
+     </text:list-style>
+    </office:automatic-styles>
+    <office:master-styles>
+     <style:master-page style:name="Standard" style:page-layout-name="onecol"/>
+    </office:master-styles>
+   </office:document-styles>
+   <office:text>
+    <text:list text:style-name="LFO1">
+     <text:list-item>
+      <text:list>
+       <text:list-item>
+        <text:p>This is a test of numbering This is a test of numbering This is a test of numbering This is a test of numbering This is a test of numbering This is a test of numbering.</text:p>
+        <text:list>
+         <text:list-item>
+          <text:p>This is a test of numbering This is a test of numbering This is a test of numbering This is a test of numbering This is a test of numbering This is a test of numbering.</text:p>
+         </text:list-item>
+         <text:list-item>
+          <text:p>Blah bleee This is a test of numbering This is a test of numbering This is a test of numbering This is a test of numbering This is a test of numbering This is a test of numbering.</text:p>
+          <text:list>
+           <text:list-item>
+            <text:p>This is a test of numbering This is a test of numbering This is a test of numbering This is a test of numbering This is a test of numbering This is a test of numbering. This is a test of numbering.</text:p>
+            <text:list>
+             <text:list-item>
+              <text:p>This is a test of numbering This is a test of numbering This is a test of numbering This is a test of numbering This is a test of numbering This is a test of numbering.</text:p>
+             </text:list-item>
+            </text:list>
+           </text:list-item>
+          </text:list>
+         </text:list-item>
+        </text:list>
+       </text:list-item>
+      </text:list>
+     </text:list-item>
+    </text:list>
+   </office:text>
+  </input>
+  <layoutchecks>
+   <check xpath="(.//text:list)[1]">
+    <marginLeft value="0px"/>
+   </check>
+   <check xpath="(.//text:list)[2]">
+    <marginLeft value="-24px"/>
+   </check>
+   <check xpath="(.//text:list)[3]">
+    <marginLeft value="-48px"/>
+   </check>
+   <check xpath="(.//text:list)[4]">
+    <marginLeft value="-72px"/>
+   </check>
+   <check xpath="(.//text:list)[5]">
+    <marginLeft value="-96px"/>
+   </check>
+   <check xpath="(.//text:list-item)[1]">
+    <marginLeft value="24px"/>
+   </check>
+   <check xpath="(.//text:list-item)[2]">
+    <marginLeft value="48px"/>
+   </check>
+   <check xpath="(.//text:list-item)[3]">
+    <marginLeft value="72px"/>
+   </check>
+   <check xpath="(.//text:list-item)[4]">
+    <marginLeft value="72px"/>
+   </check>
+   <check xpath="(.//text:list-item)[5]">
+    <marginLeft value="96px"/>
+   </check>
+   <check xpath="(.//text:list-item)[6]">
+    <marginLeft value="120px"/>
+   </check>
+  </layoutchecks>
+ </test>
+
+ <test name="list-level-properties-missing">
+  <input>
+   <office:document-styles>
+    <office:automatic-styles>
+     <text:list-style style:name="L1">
+      <text:list-level-style-number style:num-format="1" style:num-suffix=")" text:level="1">
+      </text:list-level-style-number>
+      <text:list-level-style-number style:num-format="a" style:num-letter-sync="true" style:num-suffix=")" text:level="2">
+      </text:list-level-style-number>
+     </text:list-style>
+    </office:automatic-styles>
+   </office:document-styles>
+   <office:text>
+    <text:list text:style-name="L1" xml:id="list432847329805709832">
+     <text:list-item>
+      <text:p text:style-name="P1">This is a numbering test, This is a numbering test, This is a numbering test, This is a numbering test, This is a numbering test, This is a numbering test, This is a numbering test.</text:p>
+      <text:list>
+       <text:list-item>
+        <text:p text:style-name="P1">This is a numbering test, This is a numbering test, This is a numbering test, This is a numbering test, This is a numbering test, This is a numbering test, This is a numbering test.</text:p>
+       </text:list-item>
+      </text:list>
+     </text:list-item>
+    </text:list>
+   </office:text>
+  </input>
+  <layoutchecks>
+   <check xpath="(.//text:list)[1]">
+    <marginLeft value="0px"/>
+   </check>
+   <check xpath="(.//text:list)[2]">
+    <marginLeft value="0px"/>
+   </check>
+  </layoutchecks>
+ </test>
+
+ <test name="list-label-alignment-missing">
+  <input>
+   <office:document-styles>
+    <office:automatic-styles>
+     <text:list-style style:name="L1">
+      <text:list-level-style-number style:num-format="1" style:num-suffix="." text:level="1" text:style-name="Numbering_20_Symbols">
+       <style:list-level-properties text:list-level-position-and-space-mode="label-alignment">
+       </style:list-level-properties>
+      </text:list-level-style-number>
+      <text:list-level-style-number style:num-format="1" style:num-suffix="." text:display-levels="2" text:level="2" text:style-name="Numbering_20_Symbols">
+       <style:list-level-properties text:list-level-position-and-space-mode="label-alignment">
+       </style:list-level-properties>
+      </text:list-level-style-number>
+     </text:list-style>
+    </office:automatic-styles>
+   </office:document-styles>
+   <office:text>
+    <text:list text:style-name="L1" xml:id="list555894327569445">
+     <text:list-item>
+      <text:p text:style-name="P1">This is a numbering test, This is a numbering test, This is a numbering test, This is a numbering test, This is a numbering test, This is a numbering test, This is a numbering test.</text:p>
+      <text:list>
+       <text:list-item>
+        <text:p text:style-name="P1">This is a numbering test, This is a numbering test, This is a numbering test, This is a numbering test, This is a numbering test, This is a numbering test, This is a numbering test.</text:p>
+       </text:list-item>
+      </text:list>
+     </text:list-item>
+    </text:list>
+   </office:text>
+  </input>
+  <layoutchecks>
+   <check xpath="(.//text:list)[1]">
+    <marginLeft value="0px"/>
+   </check>
+   <check xpath="(.//text:list)[2]">
+    <marginLeft value="0px"/>
+   </check>
+   <check xpath="(.//text:list-item)[1]">
+    <marginLeft value="0px"/>
+   </check>
+   <check xpath="(.//text:list-item)[2]">
+    <marginLeft value="0px"/>
+   </check>
+  </layoutchecks>
+ </test>
+
+ <test name="label-alignment-list">
+  <input>
+   <office:document-styles>
+    <office:automatic-styles>
+     <text:list-style style:name="L1">
+      <text:list-level-style-number style:num-format="1" style:num-suffix="." text:level="1" text:style-name="Numbering_20_Symbols">
+       <style:list-level-properties text:list-level-position-and-space-mode="label-alignment">
+        <style:list-level-label-alignment fo:margin-left="1.27cm" fo:text-indent="-0.635cm" text:label-followed-by="listtab" text:list-tab-stop-position="1.27cm"/>
+       </style:list-level-properties>
+      </text:list-level-style-number>
+      <text:list-level-style-number style:num-format="1" style:num-suffix="." text:display-levels="2" text:level="2" text:style-name="Numbering_20_Symbols">
+       <style:list-level-properties text:list-level-position-and-space-mode="label-alignment">
+        <style:list-level-label-alignment fo:margin-left="1.905cm" fo:text-indent="-0.635cm" text:label-followed-by="listtab" text:list-tab-stop-position="1.905cm"/>
+       </style:list-level-properties>
+      </text:list-level-style-number>
+      <text:list-level-style-number style:num-format="1" style:num-suffix="." text:display-levels="3" text:level="3" text:style-name="Numbering_20_Symbols">
+       <style:list-level-properties text:list-level-position-and-space-mode="label-alignment">
+        <style:list-level-label-alignment fo:margin-left="2.54cm" fo:text-indent="-0.635cm" text:label-followed-by="listtab" text:list-tab-stop-position="2.54cm"/>
+       </style:list-level-properties>
+      </text:list-level-style-number>
+      <text:list-level-style-number style:num-format="1" style:num-suffix="." text:display-levels="4" text:level="4" text:style-name="Numbering_20_Symbols">
+       <style:list-level-properties text:list-level-position-and-space-mode="label-alignment">
+        <style:list-level-label-alignment fo:margin-left="3.175cm" fo:text-indent="-0.635cm" text:label-followed-by="listtab" text:list-tab-stop-position="3.175cm"/>
+       </style:list-level-properties>
+      </text:list-level-style-number>
+      <text:list-level-style-number style:num-format="1" style:num-suffix="." text:display-levels="5" text:level="5" text:style-name="Numbering_20_Symbols">
+       <style:list-level-properties text:list-level-position-and-space-mode="label-alignment">
+        <style:list-level-label-alignment fo:margin-left="3.81cm" fo:text-indent="-0.635cm" text:label-followed-by="listtab" text:list-tab-stop-position="3.81cm"/>
+       </style:list-level-properties>
+      </text:list-level-style-number>
+      <text:list-level-style-number style:num-format="1" style:num-suffix="." text:display-levels="6" text:level="6" text:style-name="Numbering_20_Symbols">
+       <style:list-level-properties text:list-level-position-and-space-mode="label-alignment">
+        <style:list-level-label-alignment fo:margin-left="4.445cm" fo:text-indent="-0.635cm" text:label-followed-by="listtab" text:list-tab-stop-position="4.445cm"/>
+       </style:list-level-properties>
+      </text:list-level-style-number>
+      <text:list-level-style-number style:num-format="1" style:num-suffix="." text:display-levels="7" text:level="7" text:style-name="Numbering_20_Symbols">
+       <style:list-level-properties text:list-level-position-and-space-mode="label-alignment">
+        <style:list-level-label-alignment fo:margin-left="5.08cm" fo:text-indent="-0.635cm" text:label-followed-by="listtab" text:list-tab-stop-position="5.08cm"/>
+       </style:list-level-properties>
+      </text:list-level-style-number>
+      <text:list-level-style-number style:num-format="1" style:num-suffix="." text:display-levels="8" text:level="8" text:style-name="Numbering_20_Symbols">
+       <style:list-level-properties text:list-level-position-and-space-mode="label-alignment">
+        <style:list-level-label-alignment fo:margin-left="5.715cm" fo:text-indent="-0.635cm" text:label-followed-by="listtab" text:list-tab-stop-position="5.715cm"/>
+       </style:list-level-properties>
+      </text:list-level-style-number>
+      <text:list-level-style-number style:num-format="1" style:num-suffix="." text:display-levels="9" text:level="9" text:style-name="Numbering_20_Symbols">
+       <style:list-level-properties text:list-level-position-and-space-mode="label-alignment">
+        <style:list-level-label-alignment fo:margin-left="6.35cm" fo:text-indent="-0.635cm" text:label-followed-by="listtab" text:list-tab-stop-position="6.35cm"/>
+       </style:list-level-properties>
+      </text:list-level-style-number>
+      <text:list-level-style-number style:num-format="1" style:num-suffix="." text:display-levels="10" text:level="10" text:style-name="Numbering_20_Symbols">
+       <style:list-level-properties text:list-level-position-and-space-mode="label-alignment">
+        <style:list-level-label-alignment fo:margin-left="6.985cm" fo:text-indent="-0.635cm" text:label-followed-by="listtab" text:list-tab-stop-position="6.985cm"/>
+       </style:list-level-properties>
+      </text:list-level-style-number>
+     </text:list-style>
+    </office:automatic-styles>
+    <office:master-styles>
+     <style:master-page style:name="Standard" style:page-layout-name="onecol"/>
+    </office:master-styles>
+   </office:document-styles>
+   <office:text>
+    <text:list text:style-name="L1" xml:id="list1189140193929523476">
+     <text:list-item>
+      <text:p text:style-name="P1">This is a numbering test, This is a numbering test, This is a numbering test, This is a numbering test, This is a numbering test, This is a numbering test, This is a numbering test.</text:p>
+      <text:list>
+       <text:list-item>
+        <text:p text:style-name="P1">This is a numbering test, This is a numbering test, This is a numbering test, This is a numbering test, This is a numbering test, This is a numbering test, This is a numbering test.</text:p>
+        <text:list>
+         <text:list-item>
+          <text:p text:style-name="P1">This is a numbering test, This is a numbering test, This is a numbering test, This is a numbering test, This is a numbering test, This is a numbering test, This is a numbering test.</text:p>
+          <text:list>
+           <text:list-item>
+            <text:p text:style-name="P1">This is a numbering test, This is a numbering test, This is a numbering test, This is a numbering test, This is a numbering test, This is a numbering test, This is a numbering test.</text:p>
+           </text:list-item>
+          </text:list>
+         </text:list-item>
+        </text:list>
+       </text:list-item>
+      </text:list>
+     </text:list-item>
+    </text:list>
+   </office:text>
+  </input>
+  <layoutchecks>
+   <check xpath="(.//text:list)[1]">
+    <marginLeft value="0px"/>
+   </check>
+   <check xpath="(.//text:list)[2]">
+    <marginLeft value="-1.27cm"/>
+   </check>
+   <check xpath="(.//text:list)[3]">
+    <marginLeft value="-1.905cm"/>
+   </check>
+   <check xpath="(.//text:list)[4]">
+    <marginLeft value="-2.54cm"/>
+   </check>
+   <check xpath="(.//text:list-item)[1]">
+    <marginLeft value="1.27cm"/>
+   </check>
+   <check xpath="(.//text:list-item)[2]">
+    <marginLeft value="1.905cm"/>
+   </check>
+   <check xpath="(.//text:list-item)[3]">
+    <marginLeft value="2.54cm"/>
+   </check>
+   <check xpath="(.//text:list-item)[4]">
+    <marginLeft value="3.175cm"/>
+   </check>
+  </layoutchecks>
+ </test>
+ <test name="fontsize">
+  <input>
+   <office:document-styles>
+    <office:styles>
+     <style:default-style style:family="text"><style:text-properties fo:font-size="10px"/></style:default-style>
+     <style:style style:name="percentSizeParent" style:family="text"><style:text-properties fo:font-size="20px"/></style:style>
+    </office:styles>
+    <office:automatic-styles>
+     <style:style style:name="nosize" style:family="text"><style:text-properties/></style:style>
+     <style:style style:name="ptSize" style:family="text"><style:text-properties fo:font-size="20.25pt"/></style:style>
+     <style:style style:name="pxSize" style:family="text"><style:text-properties fo:font-size="20px"/></style:style>
+     <style:style style:name="percentSize" style:parent-style-name="percentSizeParent" style:family="text">
+       <style:text-properties fo:font-size="50%"/>
+     </style:style>
+    </office:automatic-styles>
+   </office:document-styles>
+   <office:text>
+    <text:p>
+        <text:span text:style-name="nosize">nosize</text:span>
+        <text:span text:style-name="ptSize">ptSize</text:span>
+        <text:span text:style-name="pxSize">pxSize</text:span>
+        <text:span text:style-name="percentSize">percentSize</text:span>
+    </text:p>
+   </office:text>
+  </input>
+  <layoutchecks>
+   <check xpath="(.//text:span)[1]">
+    <fontSize value="10px"/>
+   </check>
+   <check xpath="(.//text:span)[2]">
+    <fontSize value="27px"/>
+   </check>
+   <check xpath="(.//text:span)[3]">
+    <fontSize value="20px"/>
+   </check>
+   <check xpath="(.//text:span)[4]">
+    <fontSize value="10px"/>
+   </check>
+  </layoutchecks>
+ </test>
+
+ <test name="superscript">
+  <input>
+   <office:document-styles>
+    <office:styles>
+      <style:default-style style:family="paragraph"><style:paragraph-properties fo:line-height="20px"/></style:default-style>
+      <style:default-style style:family="text"><style:text-properties fo:font-size="10px"/></style:default-style>
+    </office:styles>
+    <office:automatic-styles>
+     <style:style style:name="super" style:family="text"><style:text-properties style:text-position="super"/></style:style>
+     <style:style style:name="superWithPercent" style:family="text"><style:text-properties style:text-position="super 80%"/></style:style>
+     <style:style style:name="superPercent" style:family="text"><style:text-properties style:text-position="50%"/></style:style>
+     <style:style style:name="superPercentWithPercent" style:family="text"><style:text-properties style:text-position="50% 80%"/></style:style>
+     <style:style style:name="superWithFontSize" style:family="text"><style:text-properties fo:font-size="30px" style:text-position="super 50%"/></style:style>
+    </office:automatic-styles>
+   </office:document-styles>
+   <office:text>
+    <text:p>
+      <text:span text:style-name="super">super</text:span>
+      <text:span text:style-name="superWithPercent">superWithPercent</text:span>
+      <text:span text:style-name="superPercent">superPercent</text:span>
+      <text:span text:style-name="superPercentWithPercent">superPercentWithPercent</text:span>
+      <text:span text:style-name="superWithFontSize">superWithFontSize</text:span>
+    </text:p>
+   </office:text>
+  </input>
+  <layoutchecks>
+   <check xpath="(.//text:span)[1]">
+    <verticalAlign value="super"/>
+    <fontSize value="10px"/>
+   </check>
+   <check xpath="(.//text:span)[2]">
+    <verticalAlign value="super"/>
+    <fontSize value="8px"/>
+   </check>
+   <check xpath="(.//text:span)[3]">
+    <verticalAlign value="50%|10px"/>
+    <fontSize value="10px"/>
+   </check>
+   <check xpath="(.//text:span)[4]">
+    <verticalAlign value="50%|10px"/>
+    <fontSize value="8px"/>
+   </check>
+   <check xpath="(.//text:span)[5]">
+    <verticalAlign value="super"/>
+    <fontSize value="15px"/>
+   </check>
+  </layoutchecks>
+ </test>
+
+ <test name="subscript">
+  <input>
+   <office:document-styles>
+    <office:styles>
+      <style:default-style style:family="paragraph"><style:paragraph-properties fo:line-height="20px"/></style:default-style>
+      <style:default-style style:family="text"><style:text-properties fo:font-size="10px"/></style:default-style>
+    </office:styles>
+    <office:automatic-styles>
+     <style:style style:name="subscript" style:family="text"><style:text-properties style:text-position="sub"/></style:style>
+     <style:style style:name="subscriptWithPercent" style:family="text"><style:text-properties style:text-position="sub 80%"/></style:style>
+     <style:style style:name="subscriptPercent" style:family="text"><style:text-properties style:text-position="-50%"/></style:style>
+    </office:automatic-styles>
+   </office:document-styles>
+   <office:text>
+    <text:p>
+      <text:span text:style-name="subscript">sub</text:span>
+      <text:span text:style-name="subscriptWithPercent">subWithPercent</text:span>
+      <text:span text:style-name="subscriptPercent">subPercent</text:span>
+    </text:p>
+   </office:text>
+  </input>
+  <layoutchecks>
+   <check xpath="(.//text:span)[1]">
+    <verticalAlign value="sub"/>
+    <fontSize value="10px"/>
+   </check>
+   <check xpath="(.//text:span)[2]">
+    <verticalAlign value="sub"/>
+    <fontSize value="8px"/>
+   </check>
+   <check xpath="(.//text:span)[3]">
+    <verticalAlign value="-50%|-10px"/>
+    <fontSize value="10px"/>
+   </check>
+  </layoutchecks>
+ </test>
+
+ <test name="margin_100percent_1">
+  <input>
+   <office:document-styles>
+    <office:styles>
+      <style:style style:name="Contents_20_2" style:display-name="Contents 2" style:family="paragraph" style:class="index">
+        <style:paragraph-properties fo:margin="100%" fo:margin-left="10px" fo:margin-right="10px" fo:text-indent="0cm" style:auto-text-indent="false"/>
+      </style:style>
+    </office:styles>
+    <office:automatic-styles>
+      <style:style style:name="P8" style:family="paragraph" style:parent-style-name="Contents_20_2">
+        <style:paragraph-properties fo:margin-left="100%"/>
+      </style:style>
+    </office:automatic-styles>
+   </office:document-styles>
+   <office:text>
+    <text:p text:style-name="P8">One</text:p>
+    <text:p text:style-name="P8">Two</text:p>
+   </office:text>
+  </input>
+  <layoutchecks>
+   <check xpath="(.//text:p)[1]">
+    <marginTop value="0px"/>
+    <marginBottom value="0px"/>
+    <marginLeft value="10px"/>
+    <marginRight value="10px"/>
+   </check>
+   <check xpath="(.//text:p)[2]">
+    <marginTop value="0px"/>
+    <marginBottom value="0px"/>
+    <marginLeft value="10px"/>
+    <marginRight value="10px"/>
+   </check>
+  </layoutchecks>
+ </test>
+
+ <test name="margin_100percent_2">
+  <input>
+   <office:document-styles>
+    <office:styles>
+      <style:style style:name="Contents_20_2" style:display-name="Contents 2" style:family="paragraph" style:class="index">
+        <style:paragraph-properties fo:margin="100%" fo:margin-left="10px" fo:margin-right="10px" fo:text-indent="0cm" style:auto-text-indent="false"/>
+      </style:style>
+    </office:styles>
+    <office:automatic-styles>
+      <style:style style:name="P8" style:family="paragraph" style:parent-style-name="Contents_20_2">
+        <style:paragraph-properties fo:margin-left="50%"/>
+      </style:style>
+    </office:automatic-styles>
+   </office:document-styles>
+   <office:text>
+    <text:p text:style-name="P8">One</text:p>
+    <text:p text:style-name="P8">Two</text:p>
+   </office:text>
+  </input>
+  <layoutchecks>
+   <check xpath="(.//text:p)[1]">
+    <marginTop value="0px"/>
+    <marginBottom value="0px"/>
+    <marginLeft value="5px"/>
+    <marginRight value="10px"/>
+   </check>
+   <check xpath="(.//text:p)[2]">
+    <marginTop value="0px"/>
+    <marginBottom value="0px"/>
+    <marginLeft value="5px"/>
+    <marginRight value="10px"/>
+   </check>
+  </layoutchecks>
+ </test>
+</layouttests>
