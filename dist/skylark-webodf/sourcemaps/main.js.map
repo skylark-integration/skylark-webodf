@@ -1,0 +1,1 @@
+{"version":3,"sources":["main.js"],"names":["define","skylark","webodf","attach"],"mappings":";;;;;;;AAAAA,QACC,mBACA,YACC,SAASC,EAAQC,GAClB,OAAOD,EAAQE,OAAO,cAAcD","file":"../main.js","sourcesContent":["define([\r\n\t\"skylark-langx-ns\",\r\n\t\"./webodf\"\r\n],function(skylark,webodf) {\r\n\treturn skylark.attach(\"intg.webodf\",webodf)\r\n});"]}
